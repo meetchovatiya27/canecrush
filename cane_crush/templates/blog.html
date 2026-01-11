@@ -1,0 +1,105 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Blog | CaneCrush{% endblock %}
+
+{% block content %}
+<!-- Start Hero Section -->
+<div class="hero">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-lg-5">
+				<div class="intro-excerpt">
+					<h1>Blog</h1>
+					<p class="mb-4">Discover the latest insights and updates on sustainable sugarcane farming. Our blog delves into innovative techniques, industry news, and success stories that inspire and educate. Join us as we explore the journey of turning raw cane into high-quality products, benefiting both the environment and communities.</p>
+					<p><a href="{% url 'products'%}" class="btn btn-secondary me-2">Shop Now</a><a href="{% url 'products'%}" class="btn btn-white-outline">Explore</a></p>
+				</div>
+			</div>
+			<div class="col-lg-7">
+				<div class="hero-img-wrap">
+					<img src='{% static "images/collect_images/blog.png" %}' style="width: 580px; height: 554px; margin-left: 120px;" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Hero Section -->
+<!-- Start Blog Section -->
+<div class="blog-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://www.mysportscience.com/post/are-natural-sugars-healthier" class="post-thumbnail"><img src="{% static 'images/blogs/post-1.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://www.mysportscience.com/post/are-natural-sugars-healthier">What is the difference between white and brown sugar?</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Ajeukendrup</a></span> <span>on <a href="#">Dec 19, 2021</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://www.everlywell.com/blog/hba1c/natural-sugar-substitutes/" class="post-thumbnail"><img src="{% static 'images/blogs/post-2.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://www.everlywell.com/blog/hba1c/natural-sugar-substitutes/">Natural Sugar Substitutes for a Healthier Life</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Macedonia</a></span> <span>on <a href="#">Oct 19, 2018</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://www.uhhospitals.org/blog/articles/2024/05/are-natural-sweeteners-healthier-than-sugar" class="post-thumbnail"><img src="{% static 'images/blogs/post-3.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://www.uhhospitals.org/blog/articles/2024/05/are-natural-sweeteners-healthier-than-sugar">Are ‘Natural’ Sweeteners Healthier Than Sugar?</a></h3>
+						<div class="meta">
+							<span>by <a href="#">University Hospitals</a></span> <span>on <a href="#">May 15, 2024</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://www.apollo247.com/blog/article/jaggery-health-benefits-drawbacks" class="post-thumbnail"><img src="{% static 'images/blogs/post-4.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://www.apollo247.com/blog/article/jaggery-health-benefits-drawbacks">Jaggery Vs Refined Sugar: Which Is The Healthier Sweetener?</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Dr Sonia Bhatt</a></span> <span>on <a href="#">May 22, 2023</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://www.reveda.com/blogs/reveda-blog/jaggery-powder-benefits-top-benefits-of-jaggery-powder" class="post-thumbnail"><img src="{% static 'images/blogs/blog-index-2.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://www.reveda.com/blogs/reveda-blog/jaggery-powder-benefits-top-benefits-of-jaggery-powder">Jaggery Powder Benefits: Top Benefits of Jaggery Powder</a></h3>
+						<div class="meta">
+							<span>by <a href="#">REVEDA</a></span> <span>on <a href="#">Dec 15, 2021</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-5">
+				<div class="post-entry">
+					<a href="https://toneop.com/blog/jaggery-powder" class="post-thumbnail"><img src="{% static 'images/blogs/post-5.jpg' %}" alt="Image" class="img-fluid" style="height: 250px;"></a>
+					<div class="post-content-entry">
+						<h3><a href="https://toneop.com/blog/jaggery-powder">Natural Sugars: The Sweet Benefits of Choosing Natural Over Refined</a></h3>
+						<div class="meta">
+							<span>by <a href="#">HealthifyMe</a></span> <span>on <a href="#">May 4, 2021</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Blog Section -->	
+{% endblock %}

@@ -1,0 +1,449 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Product Details | CaneCrush{% endblock %}
+{% block content %}
+
+<!-- Start Product Detail Section -->
+<div class="untree_co-section product-section before-footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 ">
+                <div class="item active">
+                    <img src="{{ product.main_image.url }}" id="main-image" class="main-image">
+                </div>
+                <div class="mini-images">
+                    <img src="{{ product.image_1.url }}" class="mini-image" data-id="1">
+                    <img src="{{ product.image_2.url }}" class="mini-image" data-id="2">
+                    <img src="{{ product.image_3.url }}" class="mini-image" data-id="3">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form method="POST" id="pack-size-form">
+                    {% csrf_token %}
+                    <div class="product-detail">
+                        <h2>{{ product.name.title }}</h2>
+                        <input type="hidden" id="selected-product-name" name="selected_product_name" value="{{ product.name }}">
+                        <div class="subtitle light-geay"> Organic | Chemical-Free | Eco-friendly</div>
+                        <div class="woocommerce-product-rating">
+                            <span class="stars" id="average-rating"></span>
+                        </div>
+                        <hr>
+                        <div class="single-pr-price price">
+                            <div class="a-section a-spacing-none aok-align-center aok-relative">
+                                {% if product.discount_percentage %}
+                                    <span aria-hidden="true" class="a-size-large a-color-price savingPriceOverride aok-align-center reinventPriceSavingsPercentageMargin savingsPercentage"> -{{ product.discount_percentage }}%</span>
+                                    <span class="currency_symb">₹</span>
+                                    <span class="a-price-whole" id="discounted-price">{{ product.get_discounted_price }}</span>
+                                    <input type="hidden" id="selected-discounted-price" name="selected_discounted_price" value="{{ product.get_discounted_price }}">
+                                {% endif %}
+                            </div>
+                            <div class="product-mrp">
+                                <span class="mrp-label">M.R.P.:</span>
+                                <del id="del-original-price">₹{{ product.original_price }}</del>
+                            </div>
+                            <span class="f-14"> Inclusive of all taxes</span>
+                        </div>
+                        <br>
+                        <div class="product_meta">
+                            <span class="sku_wrapper">
+                                <span class="meta-label">Pack Size:</span>
+                                <input type="hidden" id="selected-pack-size" name="selected_pack_size" value="{{ selected_pack_size }}">
+                                {% for pack in ordered_pack_sizes %}
+                                    <button type="button" class="packsize {% if pack.pack_size.size == '1kg' %}active{% endif %}" data-pack-size="{{ pack.pack_size.size }}" data-discounted-price="{{ pack.get_discounted_price }}" data-original-price="{{ pack.get_original_price }}">
+                                        {{ pack.pack_size.size }}
+                                    </button>
+                                {% endfor %}
+                            </span>
+                        </div>
+                        
+                        <div class="qun-wrapper addsingle-product d-flex">
+                            {% if product.stock == 0 %}
+                                <button class="primary-btn out-of-stock-button" disabled>Out of Stock</button>
+                            {% else %}
+                                {% if order_item_exists %}
+                                    <form id="submit-quantity" method="post" action="{% url 'product' product.slug %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="selected_discounted_price" value="{{ product.get_discounted_price }}">
+                                        <div class="quantity-input-container">
+                                            <button type="button" class="quantity-button" onclick="decreaseQuantity()">-</button>
+                                            <input type="number" id="quantity" name="quantity" value="{{ total_quantity }}" class="quantity-field" min="1">
+                                            <button type="button" class="quantity-button" onclick="increaseQuantity()">+</button>
+                                        </div>
+                                        <button type="button" class="primary-btn button pisol_single_buy_now pisol_buy_now_button pisol_type_simple" name="checkout" value="870" onclick="redirectToWhatsApp()">Buy Now</button>
+                                    </form>
+                                {% else %}
+                                    {% if user.is_authenticated %}
+                                        <button type="submit" data-product-quantity="1" data-product-id="870" class="primary-btn add-first-button cart-button d-block lazyloaded">
+                                            <span class="add-to-cart">Add to Cart</span><i class="fa fa-shopping-cart"></i>
+                                        </button>
+                                    {% else %}
+                                        <a href="{% url 'login' %}" class="primary-btn button pisol_single_buy_now pisol_buy_now_button pisol_type_simple" style="text-decoration: none;">Add to Cart<i class="fa fa-shopping-cart"></i></a>
+                                    {% endif %}
+                                    {% if user.is_authenticated %}
+                                        <button class="primary-btn button pisol_single_buy_now pisol_buy_now_button pisol_type_simple" type="button" onclick="redirectToWhatsApp()">Buy Now</button>
+                                    {% else %}
+                                        <a href="{% url 'login' %}" class="primary-btn button pisol_single_buy_now pisol_buy_now_button pisol_type_simple" style="text-decoration: none;">Buy Now</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <p class="product-description">
+                    <span class="short-description">{{ product.description|truncatewords:30 }}</span>
+                    <span class="full-description" style="display: none;">{{ product.description }}</span>
+                    <span class="show-more"> Read more</span>
+                    <span class="show-less" style="display: none;">Read less</span>
+                </p>
+            </div>
+        </div>
+        <div class="row" style="padding-top:100px;">
+            <div class="benefits">
+                <h2 class="text-center">Multiple Benefits</h2>
+            </div>
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-12">
+                        <div class="row my-5">
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/1._Rich_in_Iron.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">RICH IN IRON</h3>
+                                    <p class="text-center">Desi khaand is a good source of iron,which is essential for the production of hemoglobin and preventing anemia.</p>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/2.Antioxidant_Content.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">ANTIOXIDANT CONTENT</h3>
+                                    <p class="text-center">khaand conntains antioxidants that helps in neutralizing free radicals in the body, supporting overall health.</p>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/3.Aids_Digestion.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">AIDS DIGESTION</h3>
+                                    <p class="text-center">It acts as a natural digestive agent, and promotes a healthy digestive system.
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/4.Detoxification.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">DETOXIFICATION</h3>
+                                    <p class="text-center">Khaand is believed to have detoxifying properties, which helps in cleansing the liver and eliminate toxins from the body.</p>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/5.NATURAL_SWEETNER.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">NATURAL SWEETNER</h3>
+                                    <p class="text-center">It acts as a natural sweetener without the harmful effects linked with processed sugars.</p>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <div class="feature text-center">
+                                        <img src='{% static "images/icons/6.ENERGY_BOOSTER.png" %}' alt="Image" class="imf-fluid">
+                                    <h3 class="text-center" style="padding-top: 20px;">ENERGY BOOSTER</h3>
+                                    <p class="text-center">Provides a sustainable energy boost due to its complex carbohydrates, making it a better alternative to refined sugar for sustained energy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <div class="row">
+            <div class="customer-reviews">
+                <h2>Customer Reviews</h2>
+                <div class="review-summary">
+                    <span class="stars" id="average-rating"></span>
+                    <span>Based on {{ reviews.count }} reviews</span>
+                    {% if user.is_authenticated %}
+                    <a href="#" id="write-review-link" class="write-review" style="color: #0d67bb; font-size: 15px;">Write a review</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="write-review" style="color: #0d67bb; font-size: 15px;">Write a review</a>
+                    {% endif %}
+                </div>
+                <div id="review-form" class="review-form">
+                    <h3>Write a Review</h3>
+                    <form class="form" method="POST" action="{% url 'review' product.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product" value="{{ product.id }}">
+                        <div class="row">
+                            <div class="form-group">
+                                <input type="text" id="user" name="user" placeholder="Name *" value="{{ request.user.username }}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" placeholder="Email *" value="{{ request.user.email }}" required>
+                            </div>
+                        </div>
+                        <p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" data-gtm-form-interact-field-id="0"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+                        <div class="form-group">
+                            <label>Your rating</label>
+                            <span class="stars">
+                                <a class="star-1" href="#" data-value="1">☆</a>
+                                <a class="star-2" href="#" data-value="2">☆</a>
+                                <a class="star-3" href="#" data-value="3">☆</a>
+                                <a class="star-4" href="#" data-value="4">☆</a>
+                                <a class="star-5" href="#" data-value="5">☆</a>
+                            </span>
+                            <input type="hidden" id="rating" name="rating" value="">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="review" name="review" rows="5" placeholder="Your review *" required></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit">Submit</button>
+                            <button type="button" id="cancel-review">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="review">
+                    {% if reviews %}
+                        {% for review in reviews %}
+                            <div class="review-item {% if forloop.counter > 3 %}hidden{% endif %}">
+                                <div class="review-header">
+                                    <div class="stars" data-rating="{{ review.rating }}">
+                                    </div>
+                                    <span class="reviewer-name">{{ review.user.username }}</span>
+                                    <span class="review-date">{{ review.submitted_date }}</span>
+                                </div>
+                                <div class="review-body">
+                                    {{ review.review }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <a id="show-more-reviews" class="hidden" style="cursor: pointer;">Show More</a>
+                        <a id="show-less-reviews" class="hidden" style="cursor: pointer;">Show Less</a>
+                    {% else %}
+                        <p>No reviews available.</p>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function redirectToWhatsApp() {
+    var phoneNumber = '6353537434'; 
+    var message = encodeURIComponent('Hello, I would like to proceed with my order.');
+    var whatsappUrl = 'https://wa.me/' + phoneNumber + '?text=' + message;
+    window.location.href = whatsappUrl;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const showMoreButton = document.getElementById('show-more-reviews');
+    const showLessButton = document.getElementById('show-less-reviews');
+    showLessButton.style.display = 'none'; 
+
+    showMoreButton.addEventListener('click', function() {
+        const hiddenReviews = document.querySelectorAll('.review-item.hidden');
+        hiddenReviews.forEach(review => {
+            review.classList.remove('hidden');
+        });
+        showMoreButton.style.display = 'none'; 
+        showLessButton.style.display = 'block'; 
+        showMoreButton.classList.add('hidden');
+        showLessButton.classList.remove('hidden');
+    });
+
+    showLessButton.addEventListener('click', function() {
+        const reviews = document.querySelectorAll('.review-item');
+        reviews.forEach((review, index) => {
+            if (index >= 3) {
+                review.classList.add('hidden');
+            }
+        });
+        showLessButton.style.display = 'none'; 
+        showMoreButton.style.display = 'block'; 
+        showLessButton.classList.add('hidden');
+        showMoreButton.classList.remove('hidden');
+    });
+    // Hide the "Show Less" button initially
+    showLessButton.classList.add('hidden');
+
+    const reviews = document.querySelectorAll('.review-header .stars');
+        let totalRating = 0;
+        let totalReviews = reviews.length;
+
+        reviews.forEach(starContainer => {
+            const rating = parseInt(starContainer.getAttribute('data-rating'));
+            totalRating += rating;
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.classList.add('fa', 'fa-star');
+                if (i <= rating) {
+                    star.classList.add('checked');
+                }
+                starContainer.appendChild(star);
+            }
+        });
+    // Calculate and display average rating
+    const averageRating = totalReviews > 0 ? Math.round(totalRating / totalReviews) : 0;
+    const starsContainer = document.getElementById('average-rating');
+
+    starsContainer.innerHTML = ''; // Clear existing stars
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.classList.add('fa', 'fa-star');
+        if (i <= averageRating) {
+            star.classList.add('checked');
+        }
+        starsContainer.appendChild(star);
+    }
+    const mainImage = document.getElementById('main-image');
+    const miniImages = document.querySelectorAll('.mini-image');
+
+        miniImages.forEach(miniImage => {
+            miniImage.addEventListener('click', function() {
+                // Swap the src attributes of the main image and the clicked mini image
+                const tempSrc = mainImage.src;
+                mainImage.src = this.src;
+                this.src = tempSrc;
+            });
+        });
+
+    const stars = document.querySelectorAll(".stars a");
+    stars.forEach((star, index) => {
+        star.addEventListener("click", function(event) {
+            event.preventDefault();
+            const value = parseInt(this.getAttribute("data-value"));
+
+            // Deselect all stars
+            stars.forEach((s, i) => {
+                s.classList.remove("active");
+            });
+
+            // Select stars up to the clicked one
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add("active");
+            }
+
+            // Update hidden input value with selected rating
+            const ratingInput = document.getElementById("rating");
+            ratingInput.value = value;
+        });
+    });
+
+    const writeReviewLink = document.getElementById("write-review-link");
+    const reviewForm = document.getElementById("review-form");
+    const cancelReviewButton = document.getElementById("cancel-review");
+
+    writeReviewLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        reviewForm.style.display = "block";
+    });
+
+    cancelReviewButton.addEventListener("click", function() {
+        reviewForm.style.display = "none";
+    });
+});
+
+// Event listeners for "Show more" and "Show less"
+document.querySelector('.show-more').addEventListener('click', function () {
+    document.querySelector('.full-description').style.display = 'inline';
+    document.querySelector('.short-description').style.display = 'none';
+    document.querySelector('.show-more').style.display = 'none';
+    document.querySelector('.show-less').style.display = 'inline';
+});
+
+document.querySelector('.show-less').addEventListener('click', function () {
+    document.querySelector('.full-description').style.display = 'none';
+    document.querySelector('.short-description').style.display = 'inline';
+    document.querySelector('.show-more').style.display = 'inline';
+    document.querySelector('.show-less').style.display = 'none';
+});
+
+document.querySelectorAll('.packsize').forEach(function(element) {
+    element.addEventListener('click', function() {
+        // Remove 'active' class from all packsize elements
+        document.querySelectorAll('.packsize').forEach(function(el) {
+            el.classList.remove('active');
+        });
+        // Add 'active' class to the clicked element
+        element.classList.add('active');
+    });
+});
+function updateSelectedPackSize(packSize) {
+    document.getElementById('selected-pack-size').value = packSize;
+    console.log(packSize)
+}
+function updateSelectedPackSize(packSize) {
+    document.getElementById('selected-pack-size').value = packSize;
+}
+
+function decreaseQuantity() {
+    var quantityInput = document.getElementById('quantity');
+    var currentValue = parseInt(quantityInput.value);
+    if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+    }
+}
+
+function increaseQuantity() {
+    var quantityInput = document.getElementById('quantity');
+    var currentValue = parseInt(quantityInput.value);
+    quantityInput.value = currentValue + 1;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const packSizeButtons = document.querySelectorAll('.packsize');
+
+    packSizeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const discountedPrice = button.getAttribute('data-discounted-price');
+            const originalPrice = button.getAttribute('data-original-price');
+
+            document.getElementById('selected-pack-size').value = button.textContent.split(' - ')[0]; 
+            if (discountedPrice) {
+                document.getElementById('discounted-price').textContent = `${discountedPrice}`;
+                document.getElementById('original-price').textContent = `${originalPrice}`;
+            } else {
+                document.getElementById('discounted-price').textContent = `${originalPrice}`;
+                document.getElementById('original-price').textContent = '';
+            }
+
+            packSizeButtons.forEach(btn => btn.classList.remove('active'));
+
+            button.classList.add('active');
+        });
+    });
+
+    const initialPackSizeButton = document.querySelector('.packsize[data-pack-size="1kg"]');
+    if (initialPackSizeButton) {
+    initialPackSizeButton.click(); 
+    }
+});
+$('.packsize').on('click', function() {
+    var originalPrice = $(this).data('original-price');
+    $('#del-original-price').text('₹' + originalPrice);
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const packButtons = document.querySelectorAll('.packsize');
+    packButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            packButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('selected-pack-size').value = this.getAttribute('data-pack-size');
+            document.getElementById('selected-discounted-price').value = this.getAttribute('data-discounted-price');
+            document.getElementById('discounted-price').innerText = this.getAttribute('data-discounted-price');
+            document.getElementById('del-original-price').innerText = '₹' + this.getAttribute('data-original-price');
+        });
+    });
+});
+
+function addToCart() {
+    const selectedPackSize = document.getElementById('selected-pack-size').value;
+    const selectedDiscountedPrice = document.getElementById('selected-discounted-price').value;
+    const form = document.getElementById('pack-size-form');
+    form.action = "{% url 'cart' %}";  
+    form.submit();
+}
+
+</script>
+<!-- End Product Detail Section -->
+{% endblock %}
+

@@ -1,0 +1,306 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Home | CaneCrush{% endblock %}
+{% block content %}
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Welcome to <span clsas="d-block">Canecrush</span></h1>
+                    <p class="mb-4">                   
+                        Discover the Natural Sweetness of Natural Sugar
+                        At Canecrush, we bring you the purest form of sweetness with our premium organic sugar. Made from the finest sugarcane, our jaggery is a healthier and more natural alternative to refined sugar, rich in minerals and nutrients that are often lost during the refining process.</p>
+                    <p><a href="{% url 'products' %}" class="btn btn-secondary me-2">Shop Now</a><a href="{% url 'products' %}" class="btn btn-white-outline">Explore</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-img-wrap">
+                    <img src='{% static "images/collect_images/home.png" %}' style="width: 600px; height: 593px; margin-left: 120px;" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start Product Section -->
+<div class="product-section">
+    <div class="container">
+        <div class="row">
+            <!-- Start Column 1 -->
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+                <h2 class="mb-4 section-title">Popular Picks</h2>
+                <p class="mb-4">Discover our organic sugar delights, cherished by health-conscious consumers globally. From pure sugarcane juices to delectable treats, indulge guilt-free. Shop now before they vanish, and experience natural sweetness at its finest!</p>
+                <p><a href="{% url 'products' %}" class="btn" >Explore</a></p>
+            </div>
+            <!-- End Column 1 --> 
+            <!-- Start Column 2 -->
+            {% for product in products %}
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+                <!-- Start Column 1 -->
+                <a class="product-item" href="{% url 'product' product.slug %}">
+                    <img src="{{ product.main_image.url }}" class="img-fluid product-thumbnail" style="height: 255px;">
+                    <h3 class="product-title">{{product.name}}</h3>
+                    <span class="icon-cross"><img src='{% static "images/cross.svg" %}' class="img-fluid"></span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- End Product Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src='{% static "images/icons/icons8-natural-food-50.png" %}' alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Natural and Unprocessed</h3>
+                            <p>Our natural sugar is crafted using traditional methods, ensuring that it retains its natural goodness and rich flavor.</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src='{% static "images/icons/icons8-hydroponics-50.png" %}' alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Rich in Nutrients</h3>
+                            <p>Packed with essential minerals like iron, magnesium, and potassium, natural sugar offers health benefits that refined sugar simply can't match.</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src='{% static "images/icons/icons8-energy-50.png" %}' alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Boosts Energy</h3>
+                            <p>A natural source of carbohydrates, jaggery provides a quick and lasting energy boost, perfect for your daily needs.</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src='{% static "images/icons/icons8-gentle-on-stomach-50.png" %}' alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Supports Digestion</h3>
+                            <p>Known for its digestive properties, jaggery can help cleanse your system and aid in smoother digestion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src='{% static "images/collect_images/why_choose_us.jpg" %}' alt="Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start We Help Section -->
+<div class="we-help-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="imgs-grid">
+                    <div class="grid grid-1"><img src='{% static "images/collect_images/demo_1.jpg" %}' alt="Untree.co"></div>
+                    <div class="grid grid-2"><img src='{% static "images/collect_images/demo_2.jpg" %}' alt="Untree.co"></div>
+                    <div class="grid grid-3"><img src='{% static "images/collect_images/demo_3.jpg" %}' alt="Untree.co"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 ps-lg-5">
+                <h2 class="section-title mb-4">Discover the Goodness of Organic Products</h2>
+                <p>Experience the wholesome sweetness of our organic sugar, made from the finest sugarcane using traditional methods. Our natural sugar comes in biodegradable and recyclable packaging, promoting a sustainable lifestyle. Enjoy the lasting freshness and nutritional value of our organic sugar with proper storage.</p>
+                <ul class="list-unstyled custom-list my-4">
+                    <li>Packed with iron, magnesium, potassium, and antioxidants</li>
+                    <li>Helps maintain acid balance for stable blood pressure</li>
+                    <li>Cleanses the liver and purifies the blood</li>
+                    <li>Enhances digestion and alleviates constipation</li>
+                </ul>
+                <!-- <p>Switch to our organic jaggery sugar for a healthier, tastier, and more sustainable choice.</p> -->
+                <p><a href="{% url 'products' %}" class="btn">Explore</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End We Help Section -->
+<!-- Start Testimonial Slider -->
+<div class="testimonial-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+                        <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+                    </div>
+                    <div class="testimonial-slider">
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;I have been using CaneCrush organic sugar for over a year now, and I am happier with the quality. The rich, natural sweetness is perfect for my morning tea and baking needs. Knowing it's packed with nutrients and free from chemicals makes me feel great about using it for my family. Plus, the eco-friendly packaging aligns with our commitment to sustainability. Highly recommend!&rdquo;</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src='{% static "images/testimonials/janavi_dudhat.jpeg" %}' alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Janvi Dudhat</h3>
+                                            <span class="position d-block mb-3">CEO, Co-Founder, A P Accountant</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;CaneCrush's jaggery is a game-changer. I switched from refined sugar to their organic jaggery, and the difference is incredible. Not only does it taste amazing, but it also helps with my digestion and keeps my energy levels steady throughout the day. The detailed attention to traditional methods and natural processes really shines through in the final product. I can't imagine going back to regular sugar.&rdquo;</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src='{% static "images/testimonials/jay_gabani.jpg" %}' alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Jay Gabani</h3>
+                                            <span class="position d-block mb-3">Athlete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;As someone who loves to bake, finding a healthier sugar alternative was crucial for me. CaneCrush organic sugar has become a staple in my pantry. It adds a unique depth of flavor to my cookies and cakes that my family loves. The fact that it's nutrient-rich and eco-friendly makes it even better. I appreciate the long shelf life and the effort put into sustainable packaging.&rdquo;</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src='{% static "images/testimonials/julee_hirapara.jpg" %}' alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Julee Hirapara</h3>
+                                            <span class="position d-block mb-3">Baker, Co-Founder, Home Baker's</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;I recently discovered CaneCrush and decided to try their organic jaggery. It's been a fantastic addition to my diet. I feel more energetic and healthier since making the switch. The jaggery dissolves easily in my coffee and gives it a delightful taste. The process they follow to make the jaggery is impressive, and I love that it comes in biodegradable packaging. Great product and highly trustworthy brand!&rdquo;</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src='{% static "images/testimonials/nisit_patel.jpg" %}' alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Nisit Patel</h3>
+                                            <span class="position d-block mb-3">Software Engineer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;Using CaneCrush organic sugar has been a revelation. I never realized how much better my recipes could taste until I made the switch. It's perfect for sweetening everything from smoothies to desserts. The commitment to quality, health benefits, and eco-friendly packaging makes CaneCrush stand out from the rest. I'm thrilled to support a brand that prioritizes both health and the environment.&rdquo;</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src='{% static "images/testimonials/prutha_vekariya.jpg" %}' alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Prutha Vekaria</h3>
+                                            <span class="position d-block mb-3">Fashion Designer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonial Slider -->
+
+<!-- Start Blog Section -->
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">Recent Blog</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="{% url 'blog'%}" class="more">View All Posts</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="https://www.cancercenter.com/community/blog/2022/10/natural-vs-refined-sugars-what-is-the-difference" class="post-thumbnail"><img src='{% static "images/blogs/blog-index-1.jpg" %}' alt="Image" class="img-fluid" style="height: 247px;"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="https://www.cancercenter.com/community/blog/2022/10/natural-vs-refined-sugars-what-is-the-difference">Natural vs. refined sugars: What's the difference?</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">CITY OF HOPE</a></span> <span>on <a href="#">Oct 26, 2022 </a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="https://pharmeasy.in/blog/ayurveda-uses-benefits-side-effects-of-jaggery/#:~:text=Jaggery%20is%20used%20to%20prepare,%2C%20gazak%2C%20payasam%2C%20etc.&text=This%20nutritious%20unrefined%20sugar%20offers,as%20a%20natural%20cleansing%20agent." class="post-thumbnail"><img src='{% static "images/blogs/blog-index-2.jpg" %}' alt="Image" class="img-fluid" style="height: 248px; width: 350px;"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="https://pharmeasy.in/blog/ayurveda-uses-benefits-side-effects-of-jaggery/#:~:text=Jaggery%20is%20used%20to%20prepare,%2C%20gazak%2C%20payasam%2C%20etc.&text=This%20nutritious%20unrefined%20sugar%20offers,as%20a%20natural%20cleansing%20agent.">Jaggery: Uses, Benefits, Side Effects</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">Dr. Smita Barode</a></span> <span>on <a href="#">Jan 23, 2024</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="https://healthybuddha.in/blog/magazine-blog/health-benefits-jaggery-powder" class="post-thumbnail"><img src='{% static "images/blogs/blog-index-3.jpg" %}' alt="Image" class="img-fluid" style="height: 248px;"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="https://healthybuddha.in/blog/magazine-blog/health-benefits-jaggery-powder">15 health benefits of jaggerypowder</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 12, 2021</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Blog Section -->
+{% endblock %}

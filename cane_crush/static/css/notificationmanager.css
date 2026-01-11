@@ -1,0 +1,14 @@
+/* notificationmanager.css */
+.notification {
+    background-color: #ce1010;
+    color: #f8f8f8;
+    padding: 10px;
+    position: fixed;
+    z-index: 9999;
+    border-radius: 4px;
+}
+.topleft { top: 10px; left: 10px; }
+.topright { top: 70px; right: 10px; }
+.bottomleft { bottom: 10px; left: 10px; }
+.bottomright { bottom: 10px; right: 10px; }
+

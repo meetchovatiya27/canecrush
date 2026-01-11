@@ -1,0 +1,35 @@
+<!-- payment.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Complete Your Payment</h1>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ razorpay_key }}",  
+        "amount": "{{ order_data.amount }}",  
+        "currency": "INR",
+        "name": "CaneCrush",
+        "description": "Order {{ order.id }}",
+        "order_id": "{{ order_data.id }}",  
+        "handler": function (response){
+            window.location.href = "{% url 'payment_success' %}?order_id={{ order.id }}&payment_id=" + response.razorpay_payment_id;
+        },
+        "prefill": {
+            "name": "{{ user.username }}",
+            "email": "{{ user.email }}",
+            "contact": "{{ user.profile.phone }}"  
+        },
+        "notes": {
+            "address": "{{ user.profile.address }}"  
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+</script>
+
+{% endblock %}

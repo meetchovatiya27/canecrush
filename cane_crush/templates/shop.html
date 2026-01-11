@@ -1,0 +1,38 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Product | CaneCrush{% endblock %}
+{% block content %}
+<div class="untree_co-section product-section before-footer-section">
+    <div class="container">
+        <div class="row">
+            <!-- Start Column 1 -->
+            {% for product in products %}
+            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                <a class="product-item" href="{% url 'product' product.slug %}">
+                    <img src="{{ product.main_image.url }}" class="img-fluid product-thumbnail"  style="height: 255px; width: 304PX;">
+                    <h3 class="product-title">{{product.name}}</h3>
+                    <span class="icon-cross"><img src='{% static "images/cross.svg" %}' class="img-fluid"></span>
+                </a>
+            </div>
+            <!-- End Column 1 -->
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+<div id="notificationsContainer" class="bottomright">
+    <div class="notification n-animate-in n-animate">
+        <div class="pad"><div class="message">Hello World!
+
+        </div>
+        <div class="close" style="cursor: pointer;">
+            <div class="close-btn"></div>
+        </div>
+    </div>
+    <div class="progressContainer">
+        <div class="progress progress-animate" style="background-color: rgb(51, 51, 51);"></div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,182 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    {% comment %} <link rel="shortcut icon" href="{% static 'images/logo/Iconiclogo.png' %}" style="border-radius: 600px;"> {% endcomment %}
+    <link rel="icon" href="{% static 'images/logo/Iconiclogo12.png' %}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{% static 'images/logo/Iconiclogo12.png' %}" sizes="64x64" type="image/png">
+    <link rel="apple-touch-icon" href="{% static 'images/logo/Iconiclogo12.png' %}" sizes="180x180">
+    
+    <meta name="description" content=""/>
+    <meta name="keywords" content="bootstrap, bootstrap4"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <link href='{% static "css/bootstrap.min.css" %}' rel="stylesheet">
+    <link href='{% static "css/tiny-slider.css" %}' rel="stylesheet">
+    <link href='{% static "css/styles.css" %}' rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/notificationmanager.css' %}">
+    <script src="{% static 'js/notificationmanager.js' %}"></script>
+
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo/canecrushbrandlogo-removebg-preview.png'%}" style="width: 200px; height: 200px;"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item {% if request.path == '/products/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'products' %}">Shop</a>
+                </li>
+                <li class="nav-item {% if request.path == '/about/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'about' %}">About us</a>
+                </li>
+                <li class="nav-item {% if request.path == '/blog/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                </li>
+                <li class="nav-item {% if request.path == '/contact_us/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'contact_us' %}">Contact us</a>
+                </li>
+            </ul>
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li>
+                    {% if request.user.is_authenticated %}
+                      <a class="nav-link" href="{% url 'profile' %}">
+                        <img src="{% static 'images/user.svg' %}" alt="Profile">
+                      </a>
+                    {% else %}
+                      <a class="nav-link" href="{% url 'login' %}">
+                        <img src="{% static 'images/user.svg' %}" alt="Login">
+                      </a>
+                    {% endif %}
+                    <li class="nav-item {% if request.path == '/cart/' %}active{% endif %}">
+                        <li>
+                            {% if request.user.is_authenticated %}
+                            <a class="nav-link" href="{% url 'cart' %}">
+                                <img src="{% static 'images/cart.svg' %}">
+                            </a>
+                            {% else %}
+                            <a class="nav-link" href="{% url 'login' %}">
+                              <img src="{% static 'images/cart.svg' %}" alt="Login">
+                            </a>
+                          {% endif %}
+                        </li>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<a href="https://wa.me/6353537434" target="_blank" class="whatsapp-icon">
+    <i class="fab fa-whatsapp" ></i>
+</a>
+
+
+<!-- End Header/Navigation -->
+{% block content %}
+{% endblock %}   
+<script src='{% static "js/bootstrap.bundle.min.js" %}'></script>
+<script src='{% static "js/tiny-slider.js" %}'></script>
+<script src='{% static "js/custom.js" %}'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.7.2/jquery.flexslider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap"><a href="{% url 'home'%}" class="footer-logo"><img src="{% static 'images/logo/armgroup.png'%}" style="width: 200px; height: 150px;"></a></div>
+                <p class="mb-4">Join our journey in transforming sugarcane into pure, natural sweetness. Connect with us and explore the finest sugarcane products. Follow us for updates!</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'about'%}">About us</a></li>
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                            <li><a href="{% url 'contact_us'%}">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Knowledge base</a></li>
+                            <li><a href="#">Live chat</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'products'%}">Natural Sugar</a></li>
+                            <li><a href="{% url 'products'%}">Jaggery Powder</a></li>
+                            <li><a href="{% url 'products'%}">Gulkand</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        . All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a>
+                        Distributed By <a href="https://themewagon.com">ThemeWagon</a>
+                        <!-- License information: https://untree.co/license/ -->
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- End Footer Section -->
+</html>
