@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register | CaneCrush{% endblock %}
+
+{% block content %}
+<div class="container">
+<form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="error-msg">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    {{ error }} &nbsp; 
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {% endif %}
+    <div class="form-box">
+        <h2>Sign up</h2>
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <i class="fas fa-envelope"></i>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <i class="fas fa-phone"></i>
+                {{ form.phone_number }}
+            </div>
+            <div class="form-group">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ form.address }}
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                {{ form.password2 }}
+            </div>
+            <button type="submit" class="register-btn btn btn-primary">Register</button>
+        </form>
+        <p class="member-text">I am already a member <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</div>
+{% endblock %}
+

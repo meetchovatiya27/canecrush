@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile | CaneCrush{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+    <div class="error-msg">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {% endif %}
+<div class="form-box">
+    <h2>Profile</h2>
+        <div class="row">
+            <div class="form-group">
+            <i class="fas fa-user "></i>
+                <input type="text" id="user" name="username" placeholder="Username" value="{{form.instance.username }}">
+            </div>
+            <div class="form-group">
+            <i class="fas fa-envelope "></i>
+                <input type="email" id="email" name="email" placeholder="Email" value="{{form.instance.email}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+            <i class="fas fa-phone "></i>
+                <input type="tel" id="phone_number" name="phone_number" placeholder="Phone Number" value="{{form.instance.phone_number}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+            <i class="fas fa-address-book "></i>
+                <input type="text" id="address" name="address" placeholder="Address" value="{{form.instance.address}}">
+            </div>
+        </div>
+        <button type="submit" class="register-btn">Update</button>
+    <p class="member-text"><a href="{% url 'change_password' %}">Change password</a></p>
+    <p class="member-text"><a href="{% url 'logout' %}">Logout</a></p>
+    <p class="member-text">Go back to <a href="{% url 'home'%}">Home</a></p>
+
+</div>
+</form>
+
+<!-- <div class="image-box-register">
+    <img src="{% static 'accounts/images/register.gif' %}" alt="Desk Image">
+</div> -->
+</div>
+{% endblock %}
+

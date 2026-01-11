@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+body {
+    font-family: "Ubuntu", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+.container {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    background-image: url("static/accounts/images/why_choose_us.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-color: #cccccc; */
+    background-color: #f7f7f7;
+    box-shadow: 2px 4px 8px rgba(0.1, 0.1, 0.4, 0.4);
+    border-radius: 10px;
+}
+
+.form-box {
+    font-family: "Ubuntu", sans-serif;
+    flex: 1;
+    padding: 15px 15px 15px 15px;
+}
+
+.form-box h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #775e41;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.form-group i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color:  #333;
+    font-size: 10px; /* Adjust the size as needed */
+}
+
+.form-group input {
+    font-family: "Ubuntu", sans-serif;
+    width: 100%;
+    padding: 10px 10px 10px 35px; /* Padding for icon space */
+    border: none;
+    border-bottom: 1px solid #ccc; /* Underline */
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+    background-color: transparent; /* Transparent background */
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-bottom-color: #007bff; /* Blue underline on focus */
+    outline: none;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.form-group input::placeholder {
+    color: #999;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-group label {
+    display: inline-block;
+    color: #333;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.register-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #8F7251;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.register-btn:hover {
+    border: none;
+    background-color: #967855d8;
+}
+
+.member-text {
+    margin-top: 20px;
+    color: #333;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.member-text a {
+    color: #007bff;
+    text-decoration: none;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.member-text a:hover {
+    text-decoration: underline;
+}
+
+.image-box-register {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 30vh; 
+    padding-bottom: 20px; 
+}
+.image-box-register img {
+    max-width: 150%;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.image-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px; 
+}
+.image-box img {
+    max-width: 150%;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+/* Custom styles for select2 dropdown */
+.select2-container .select2-selection--single {
+    height: 44px; 
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #495057;
+    padding-left: 0.75rem;
+    line-height: 1.5; 
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: #f7f7f7;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 44px; 
+    right: 8px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #495057 transparent transparent transparent;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.select2-dropdown {
+    border-radius: 0.25rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ced4da;
+}
+
+.select2-results__option--highlighted[aria-selected] {
+    background-color: #80bdff;
+    color: #f7f7f7;
+}
+
+.select2-dropdown {
+    border-radius: 0.25rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ced4da;
+}
+
+.select2-results__option--highlighted[aria-selected] {
+    background-color: #80bdff;
+    color: white;
+}
+
+
+.error-msg{
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 700px;
+}
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.13rem 0.25rem;
+    color: inherit;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+}
+.close {
+    float: right;
+    font-size: 1.50rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+[type=button], [type=reset], [type=submit], button {
+    -webkit-appearance: button;
+}
+button, select {
+    text-transform: none;
+}
+button, input {
+    overflow: visible;
+}
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+button {
+    border-radius: 0;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    font-size: 15px;
+}
+.alert-dismissible {
+    padding-right: 4rem;
+}
+.alert {
+    position: relative;
+    padding: 0.50rem 1.50rem 0.50rem 0.50rem;
+    margin-bottom: 0.50rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
