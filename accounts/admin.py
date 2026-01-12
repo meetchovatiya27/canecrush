@@ -1,9 +1,9 @@
 from django.contrib import admin
 from .models import AdminUser
-from .forms import UserCreationForm
+from .forms import CustomUserCreationForm
 
 class MainAdmin(admin.ModelAdmin):
-    form = UserCreationForm
+    form = CustomUserCreationForm
     list_display = ['username', 'email', 'phone_number', 'role']
     fields = ('password', 'username', 'email', 'phone_number', 'address', 'role')
     exclude = ['user_permissions', 'groups', 'last_login', 'date_joined', 'activation_token', 'activation_timestamp', 'password_reset_token', 'password_reset_expire_timestamp', 'password_reset_timestamp']
