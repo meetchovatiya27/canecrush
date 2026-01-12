@@ -126,3 +126,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # DEFAULT PRIMARY KEY
 # -------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# WhatsApp Configuration
+WHATSAPP_OWNER_NUMBER = "919016247243"  # Replace with YOUR number

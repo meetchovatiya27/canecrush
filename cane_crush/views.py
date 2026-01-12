@@ -11,12 +11,15 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+from django.views.decorators.http import require_http_methods
 from django.template.loader import get_template
 import io
+from django.views.decorators.http import require_POST
 from xhtml2pdf import pisa
 import requests
 from django.conf import settings
 from django.http import JsonResponse
+from urllib.parse import quote
 
 # Create your views here.
 def home(request):
@@ -41,12 +44,16 @@ def products(request):
     }
     return render(request, 'shop.html', context)
 
+@login_required
 def product_view(request, slug):
     product = get_object_or_404(Product, slug=slug)
     total_quantity = 0
     order_item_exists = False
 
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect('login')  # Redirect to login if not authenticated
+            
         selected_product_name = request.POST.get('selected_product_name')
         selected_pack_size = request.POST.get('selected_pack_size')
         selected_discounted_price = request.POST.get('selected_discounted_price')
@@ -61,17 +68,22 @@ def product_view(request, slug):
         order, created = Order.objects.get_or_create(customer=request.user, paid=False)
 
         try:
-            order_item = OrderItem.objects.get(order=order, product=product)
-            order_item.quantity = quantity
-            order_item.packsize = selected_pack_size
-            order_item.price = price * quantity  
+            order_item = OrderItem.objects.get(order=order, product=product, packsize=selected_pack_size)
+            order_item.quantity += quantity  # Increase quantity instead of replacing
+            order_item.price = price * order_item.quantity  
             order_item.save()
             print(f'OrderItem updated: Pack Size - {selected_pack_size}, Price - {order_item.price}')
         except OrderItem.DoesNotExist:
-            order_item = OrderItem.objects.create(order=order, product=product, quantity=quantity, packsize=selected_pack_size, price=price * quantity)
+            order_item = OrderItem.objects.create(
+                order=order, 
+                product=product, 
+                quantity=quantity, 
+                packsize=selected_pack_size, 
+                price=price * quantity
+            )
             print(f'OrderItem created: Pack Size - {selected_pack_size}, Price - {order_item.price}')
 
-        return redirect(reverse('product', kwargs={'slug': slug}))
+        return redirect(reverse('cart'))  # Redirect to cart after adding
 
     else:
         order_item = None
@@ -110,7 +122,6 @@ def product_view(request, slug):
         return render(request, 'product-view.html', context)
 
 
-
 def generate_invoice(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order_items = OrderItem.objects.filter(order=order)
@@ -136,33 +147,91 @@ def generate_invoice(request, order_id):
     return response
 
 
+@login_required
+@require_http_methods(["GET", "POST"])
 def view_cart(request):
+    # Handle POST requests for quantity updates (legacy support)
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            selected_discounted_price = request.POST.get('selected_discounted_price')
-            selected_original_price = request.POST.get('selected_original_price')
-            quantity = int(request.POST.get('quantity'))
-            order_id = int(request.POST.get('item_id'))
+        quantity = request.POST.get('quantity')
+        order_item_id = request.POST.get('item_id')
 
-            price = selected_discounted_price if selected_discounted_price else selected_original_price
-            order = Order.objects.get(customer=request.user, paid=False)
-            order_item = OrderItem.objects.get(id=order_id, order=order)
+        if quantity and order_item_id:
+            try:
+                quantity = int(quantity)
+                order_item_id = int(order_item_id)
+                
+                if quantity < 1:
+                    quantity = 1
 
-            order_item.quantity = quantity
-            order_item.price = float(price) * int(quantity)
-            order_item.save()
+                order = Order.objects.get(customer=request.user, paid=False)
+                order_item = OrderItem.objects.get(id=order_item_id, order=order)
+                
+                # Get unit price
+                unit_price = order_item.price / order_item.quantity if order_item.quantity > 0 else 0
+                
+                # Update quantity and total price
+                order_item.quantity = quantity
+                order_item.price = unit_price * quantity
+                order_item.save()
 
-    orders = Order.objects.filter(customer=request.user)
+            except (TypeError, ValueError, Order.DoesNotExist, OrderItem.DoesNotExist):
+                pass
+
+        return redirect('cart')
+
+    # Handle GET requests
+    orders = Order.objects.filter(customer=request.user, paid=False)
     cart_items = OrderItem.objects.filter(order__in=orders)
-    
+
     total_amount = sum(item.price for item in cart_items)
+
     context = {
         'cart_items': cart_items,
         'total_amount': total_amount,
         'orders': orders
     }
-    print(context)
+
     return render(request, 'cart.html', context)
+
+
+@login_required
+@require_POST
+def update_cart_quantity(request):
+    """AJAX endpoint to update cart item quantity"""
+    try:
+        item_id = int(request.POST.get('item_id'))
+        quantity = int(request.POST.get('quantity'))
+        
+        if quantity < 1:
+            return JsonResponse({'error': 'Invalid quantity'}, status=400)
+        
+        # Get the cart item
+        order_item = OrderItem.objects.get(
+            id=item_id,
+            order__customer=request.user,
+            order__paid=False
+        )
+        
+        # Check stock
+        if quantity > order_item.product.stock:
+            return JsonResponse({'error': 'Insufficient stock'}, status=400)
+        
+        # Calculate unit price
+        unit_price = order_item.price / order_item.quantity if order_item.quantity > 0 else 0
+        
+        # Update quantity and price
+        order_item.quantity = quantity
+        order_item.price = unit_price * quantity
+        order_item.save()
+        
+        return JsonResponse({
+            'success': True,
+            'new_total': float(order_item.price),
+            'quantity': quantity
+        })
+        
+    except (ValueError, TypeError, OrderItem.DoesNotExist) as e:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 @login_required
@@ -180,7 +249,7 @@ def contact_us(request):
             subject = f"New contact message from {form.cleaned_data['fname']} {form.cleaned_data['lname']}"
             message = f"From: {form.cleaned_data['fname']} {form.cleaned_data['lname']} <{form.cleaned_data['email']}>\n\nMessage:\n{form.cleaned_data['message']}"
             sender_email = form.cleaned_data['email']
-            recipient_list = ['mailto:sagarsavaliya103@gmail.com']
+            recipient_list = ['sagarsavaliya103@gmail.com']
             send_mail(subject, message, sender_email, recipient_list)
             print(sender_email)
             return redirect('home')
@@ -188,6 +257,7 @@ def contact_us(request):
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
 
+@login_required
 def review(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
@@ -206,27 +276,77 @@ def review(request, product_id):
     reviews = Review.objects.filter(product=product)
     return render(request, 'product-view.html', {'form': form, 'product': product, 'reviews': reviews})
 
+@require_POST
+@login_required
 def remove_item_from_cart(request, id):
-    cart_item = get_object_or_404(OrderItem, id=id)
+    """Delete a cart item - uses the URL parameter"""
+    cart_item = get_object_or_404(
+        OrderItem,
+        id=id,
+        order__customer=request.user,
+        order__paid=False
+    )
     cart_item.delete()
-    return redirect('cart')
+    return JsonResponse({'success': True})
 
+@login_required
+@require_POST
+def send_whatsapp_message(request):
+    """Send WhatsApp message with cart details"""
+    try:
+        order = Order.objects.filter(customer=request.user, paid=False).first()
 
-# def send_whatsapp_message(request):
-#     if request.method == 'POST':
-#         order_details = request.POST.get('order_details', '')  
-#         print(order_details)
-#         api_endpoint = 'https://api.whatsapp.com/send'
-#         phone_number = settings.WHATSAPP_OWNER_NUMBER  
-#         message = f"Order Details:\n{order_details}"
-#         whatsapp_url = f"{api_endpoint}?phone={phone_number}&text={message}"
-#         try:
-#             response = requests.get(whatsapp_url)
-#             print(whatsapp_url)
-#             response.raise_for_status()  
+        if not order:
+            return JsonResponse({'error': 'Cart is empty'}, status=400)
 
-#             return JsonResponse({'message': 'WhatsApp message sent successfully!', 'order_details':order_details })
-#         except requests.exceptions.RequestException as e:
-#             return JsonResponse({'error': f'Failed to send WhatsApp message: {str(e)}'}, status=500)
-#     else:
-#         return JsonResponse({'error': 'Invalid request method'}, status=400)
+        items = OrderItem.objects.filter(order=order)
+
+        if not items.exists():
+            return JsonResponse({'error': 'Cart is empty'}, status=400)
+
+        # Build order message with clean structure
+        message_parts = []
+        message_parts.append("🛒 New Order")
+        message_parts.append("━━━━━━━━━━━━━━━━")
+        
+        total = 0
+        for item in items:
+            line = f"• {item.product.name} ({item.packsize})\n  Qty: {item.quantity} × ₹{(item.price/item.quantity):.2f} = ₹{item.price:.2f}"
+            message_parts.append(line)
+            total += item.price
+        
+        message_parts.append("━━━━━━━━━━━━━━━━")
+        message_parts.append(f"💰 Total Amount: ₹{total:.2f}")
+        
+        # Add customer info if available
+        customer_info = []
+        if request.user.get_full_name():
+            customer_info.append(f"👤 {request.user.get_full_name()}")
+        if request.user.email:
+            customer_info.append(f"📧 {request.user.email}")
+        
+        if customer_info:
+            message_parts.append("━━━━━━━━━━━━━━━━")
+            message_parts.extend(customer_info)
+        
+        # Join with single newlines (no extra spaces)
+        message = "\n".join(message_parts)
+
+        # Get WhatsApp number from settings with fallback
+        phone = getattr(settings, 'WHATSAPP_OWNER_NUMBER', None)
+        
+        if not phone:
+            return JsonResponse({
+                'error': 'WhatsApp number not configured',
+                'message': 'Please add WHATSAPP_OWNER_NUMBER to your settings.py',
+                'example': 'WHATSAPP_OWNER_NUMBER = "919876543210"'
+            }, status=500)
+
+        # Properly encode the message for URL
+        encoded_message = quote(message)
+        url = f"https://api.whatsapp.com/send?phone={phone}&text={encoded_message}"
+
+        return JsonResponse({'success': True, 'url': url})
+        
+    except Exception as e:
+        return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
