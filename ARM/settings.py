@@ -57,7 +57,7 @@ WSGI_APPLICATION = 'ARM.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ✅ IMPORTANT
+        'DIRS': [BASE_DIR / 'templates'],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,4 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # WhatsApp Configuration
-WHATSAPP_OWNER_NUMBER = "919016247243"  # Replace with YOUR number
+WHATSAPP_OWNER_NUMBER = "919016247243"  
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

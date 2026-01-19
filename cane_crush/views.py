@@ -249,7 +249,7 @@ def contact_us(request):
             subject = f"New contact message from {form.cleaned_data['fname']} {form.cleaned_data['lname']}"
             message = f"From: {form.cleaned_data['fname']} {form.cleaned_data['lname']} <{form.cleaned_data['email']}>\n\nMessage:\n{form.cleaned_data['message']}"
             sender_email = form.cleaned_data['email']
-            recipient_list = ['sagarsavaliya103@gmail.com']
+            recipient_list = ['meetchovatiya03@gmail.com']
             send_mail(subject, message, sender_email, recipient_list)
             print(sender_email)
             return redirect('home')
