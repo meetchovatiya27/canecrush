@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 import uuid
 
+from requests import request
+
 from .models import *
 from .forms import (
     UserRegistration,
@@ -45,6 +47,8 @@ class UserLoginView(LoginView):
 # =========================
 class UserLogout(LogoutView):
     next_page = reverse_lazy("login")
+
+    
 
 
 # =========================
