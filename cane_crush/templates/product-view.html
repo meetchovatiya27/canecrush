@@ -415,14 +415,21 @@ document.addEventListener('DOMContentLoaded', function() {
     initialPackSizeButton.click(); 
     }
 });
-// Thumbnail image click handler - switches main product image
+// Thumbnail image click handler - swaps main image with clicked mini image
 document.addEventListener('DOMContentLoaded', function() {
     const miniImages = document.querySelectorAll('.mini-image');
     const mainImage = document.getElementById('main-image');
     
     miniImages.forEach(function(miniImage) {
         miniImage.addEventListener('click', function() {
+            // Store the current main image src
+            const tempSrc = mainImage.src;
+            
+            // Set main image to clicked mini image
             mainImage.src = this.src;
+            
+            // Set clicked mini image to previous main image (swap)
+            this.src = tempSrc;
         });
     });
 });
