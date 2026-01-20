@@ -37,6 +37,9 @@ def about(request):
 def blog(request):
     return render(request, 'blog.html')
 
+def services(request):
+    return render(request, 'services.html')
+
 def products(request):
     products = Product.objects.all()
     context = {
