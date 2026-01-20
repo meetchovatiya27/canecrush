@@ -295,17 +295,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         starsContainer.appendChild(star);
     }
-    const mainImage = document.getElementById('main-image');
-    const miniImages = document.querySelectorAll('.mini-image');
+    var mainImage = document.getElementById('main-image');
+    var miniImages = document.getElementsByClassName('mini-image');
 
-        miniImages.forEach(miniImage => {
-            miniImage.addEventListener('click', function() {
-                // Swap the src attributes of the main image and the clicked mini image
-                const tempSrc = mainImage.src;
-                mainImage.src = this.src;
-                this.src = tempSrc;
-            });
-        });
+    for (let i = 0; i < miniImages.length; i++) {
+    miniImages[i].onclick = function () {
+        mainImage.src = this.src;
+         }
+    }
+
 
     const stars = document.querySelectorAll(".stars a");
     stars.forEach((star, index) => {
@@ -417,10 +415,29 @@ document.addEventListener('DOMContentLoaded', function() {
     initialPackSizeButton.click(); 
     }
 });
-$('.packsize').on('click', function() {
-    var originalPrice = $(this).data('original-price');
-    $('#del-original-price').text('₹' + originalPrice);
+// Thumbnail image click handler - switches main product image
+document.addEventListener('DOMContentLoaded', function() {
+    const miniImages = document.querySelectorAll('.mini-image');
+    const mainImage = document.getElementById('main-image');
+    
+    miniImages.forEach(function(miniImage) {
+        miniImage.addEventListener('click', function() {
+            mainImage.src = this.src;
+        });
+    });
 });
+
+// Pack size price update (converted from jQuery to vanilla JS)
+document.addEventListener('DOMContentLoaded', function() {
+    const packSizeButtons = document.querySelectorAll('.packsize');
+    packSizeButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const originalPrice = this.getAttribute('data-original-price');
+            document.getElementById('del-original-price').textContent = '₹' + originalPrice;
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const packButtons = document.querySelectorAll('.packsize');
     packButtons.forEach(button => {
@@ -446,4 +463,3 @@ function addToCart() {
 </script>
 <!-- End Product Detail Section -->
 {% endblock %}
-
