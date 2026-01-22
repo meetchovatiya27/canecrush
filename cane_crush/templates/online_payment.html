@@ -1,0 +1,129 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Online Payment{% endblock %}
+{% block content %}
+<div class="untree_co-section before-footer-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-credit-card"></i> Online Payment</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Order Details -->
+                        <div class="mb-4">
+                            <h5>Order Details</h5>
+                            <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+                            <p><strong>Total Amount:</strong> ₹{{ total_amount }}</p>
+                        </div>
+
+                        <!-- Payment Instructions -->
+                        <div class="alert alert-info">
+                            <h5><i class="fas fa-info-circle"></i> Payment Instructions</h5>
+                            <p>For now, this is a placeholder for online payment integration.</p>
+                            <p>You can integrate Razorpay, Stripe, or other payment gateways here.</p>
+                            <hr>
+                            <p><strong>For Testing:</strong> You can simulate a successful payment by clicking the button below.</p>
+                        </div>
+
+                        <!-- Payment Form (Placeholder) -->
+                        <div class="payment-form">
+                            <div class="mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-select" id="paymentMethod">
+                                    <option value="upi">UPI</option>
+                                    <option value="card">Credit/Debit Card</option>
+                                    <option value="netbanking">Net Banking</option>
+                                </select>
+                            </div>
+
+                            <!-- UPI Section -->
+                            <div id="upiSection" class="payment-section">
+                                <div class="mb-3">
+                                    <label class="form-label">UPI ID</label>
+                                    <input type="text" class="form-control" placeholder="yourname@upi" id="upiId">
+                                </div>
+                            </div>
+
+                            <!-- Card Section -->
+                            <div id="cardSection" class="payment-section" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-control" placeholder="123" maxlength="3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Net Banking Section -->
+                            <div id="netbankingSection" class="payment-section" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label">Select Bank</label>
+                                    <select class="form-select">
+                                        <option>State Bank of India</option>
+                                        <option>HDFC Bank</option>
+                                        <option>ICICI Bank</option>
+                                        <option>Axis Bank</option>
+                                        <option>Punjab National Bank</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="button" class="btn btn-primary btn-lg" id="processPaymentBtn">
+                                    <i class="fas fa-lock"></i> Pay ₹{{ total_amount }}
+                                </button>
+                                <a href="{% url 'select_payment_method' order.id %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle payment method sections
+    document.getElementById('paymentMethod').addEventListener('change', function() {
+        const method = this.value;
+        document.querySelectorAll('.payment-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        if (method === 'upi') {
+            document.getElementById('upiSection').style.display = 'block';
+        } else if (method === 'card') {
+            document.getElementById('cardSection').style.display = 'block';
+        } else if (method === 'netbanking') {
+            document.getElementById('netbankingSection').style.display = 'block';
+        }
+    });
+
+    // Process payment (simulated for now)
+    document.getElementById('processPaymentBtn').addEventListener('click', function() {
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        // Simulate payment processing
+        setTimeout(function() {
+            // Generate a mock payment ID
+            const mockPaymentId = 'PAY' + Date.now();
+            window.location.href = "{% url 'payment_success' order.id %}?payment_id=" + mockPaymentId;
+        }, 2000);
+    });
+</script>
+{% endblock %}
+

@@ -257,45 +257,8 @@ $(document).ready(function () {
         // Show loading state
         $(this).prop('disabled', true).text('Processing...');
         
-        // Use AJAX to send to server (which handles encoding properly)
-        $.ajax({
-            url: '/send_whatsapp_message/',
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            success: function(response) {
-                if (response.success && response.url) {
-                    // Open WhatsApp
-                    window.open(response.url, '_blank');
-                    // Reset button
-                    $('#checkoutButton').prop('disabled', false).text('Proceed To Checkout');
-                } else {
-                    $('#checkoutButton').prop('disabled', false).text('Proceed To Checkout');
-                    alert('Error processing checkout. Please try again.');
-                }
-            },
-            error: function(xhr) {
-                $('#checkoutButton').prop('disabled', false).text('Proceed To Checkout');
-                
-                if (xhr.responseJSON && xhr.responseJSON.error) {
-                    let errorMsg = xhr.responseJSON.error;
-                    
-                    // Special handling for configuration error
-                    if (errorMsg === 'WhatsApp number not configured') {
-                        alert('⚠️ WhatsApp Configuration Required\n\n' +
-                              'Please add the following to your settings.py:\n\n' +
-                              'WHATSAPP_OWNER_NUMBER = "919876543210"\n\n' +
-                              'Format: country_code + phone_number (no + or spaces)\n' +
-                              'Example: India = 91, US = 1, UK = 44');
-                    } else {
-                        alert('Error: ' + errorMsg);
-                    }
-                } else {
-                    alert('Error processing checkout. Please try again.');
-                }
-            }
-        });
+        // Redirect to create order and payment method selection
+        window.location.href = "{% url 'create_order' %}";
     });
 
     calculateTotalPrice();

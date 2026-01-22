@@ -1,0 +1,93 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Select Payment Method{% endblock %}
+{% block content %}
+<div class="untree_co-section before-footer-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4">Select Payment Method</h2>
+                
+                <!-- Order Summary -->
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Pack Size</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.packsize }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>₹{{ item.price }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-right">Total Amount:</th>
+                                    <th>₹{{ total_amount }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Payment Method Selection -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 payment-method-card" style="cursor: pointer; border: 2px solid #e0e0e0; transition: all 0.3s;">
+                            <div class="card-body text-center">
+                                <i class="fab fa-whatsapp fa-4x text-success mb-3"></i>
+                                <h4 class="card-title">WhatsApp Payment</h4>
+                                <p class="card-text">Pay via WhatsApp. Our team will verify your payment manually.</p>
+                                <a href="{% url 'process_whatsapp_payment' order.id %}" class="btn btn-success btn-lg">
+                                    <i class="fab fa-whatsapp"></i> Pay via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 payment-method-card" style="cursor: pointer; border: 2px solid #e0e0e0; transition: all 0.3s;">
+                            <div class="card-body text-center">
+                                <i class="fas fa-credit-card fa-4x text-primary mb-3"></i>
+                                <h4 class="card-title">Online Payment</h4>
+                                <p class="card-text">Pay securely online using UPI, Cards, or other payment methods.</p>
+                                <a href="{% url 'process_online_payment' order.id %}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-credit-card"></i> Pay Online
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'cart' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .payment-method-card:hover {
+        border-color: #007bff !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}
+

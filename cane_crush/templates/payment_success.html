@@ -1,9 +1,62 @@
-{% extends 'base.html' %}
-
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}Payment Successful{% endblock %}
 {% block content %}
-<h1>{{ status }}</h1>
-{% if error %}
-    <p>{{ error }}</p>
-{% endif %}
-<p>Your payment was processed!</p>
+<div class="untree_co-section before-footer-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white text-center">
+                        <h3 class="mb-0"><i class="fas fa-check-circle fa-2x"></i></h3>
+                        <h4 class="mb-0 mt-2">Payment Successful!</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="alert alert-success">
+                            <h5>Thank you for your order!</h5>
+                            <p class="mb-0">Your payment has been processed successfully.</p>
+                        </div>
+
+                        <div class="order-details mb-4">
+                            <h5>Order Details</h5>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Order ID:</th>
+                                    <td><strong>{{ order.order_id }}</strong></td>
+                                </tr>
+                                {% if payment.payment_id %}
+                                <tr>
+                                    <th>Payment ID:</th>
+                                    <td>{{ payment.payment_id }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Payment Method:</th>
+                                    <td>{{ payment.get_payment_method_display }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount Paid:</th>
+                                    <td><strong>₹{{ payment.amount }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td><span class="badge bg-success">{{ payment.get_status_display }}</span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="actions">
+                            <a href="{% url 'generate_invoice' order.id %}" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Download Invoice
+                            </a>
+                            <a href="{% url 'home' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-home"></i> Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
