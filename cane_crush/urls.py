@@ -17,7 +17,6 @@ urlpatterns = [
     path('update_cart_quantity/', update_cart_quantity, name='update_cart_quantity'),  
     path('generate_invoice/<int:order_id>/', generate_invoice, name='generate_invoice'),
     path('invoice/<int:invoice_id>/', view_invoice, name='view_invoice'),
-    path('send_whatsapp_message/', send_whatsapp_message, name='send_whatsapp_message'),
     
     # Order and Payment URLs
     path('create_order/', login_required(create_order), name='create_order'),

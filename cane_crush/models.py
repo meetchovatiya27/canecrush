@@ -1,4 +1,3 @@
-# models.py
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from django.db import models
 from django.utils.text import slugify

@@ -17,7 +17,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from urllib.parse import quote
 
-# Create your views here.
+
 def home(request):
     products = Product.objects.all()[:3] 
     rating_range = range(5)
@@ -51,7 +51,7 @@ def product_view(request, slug):
 
     if request.method == "POST":
         if not request.user.is_authenticated:
-            return redirect('login')  # Redirect to login if not authenticated
+            return redirect('login')  
             
         selected_product_name = request.POST.get('selected_product_name')
         selected_pack_size = request.POST.get('selected_pack_size')
@@ -68,7 +68,7 @@ def product_view(request, slug):
 
         try:
             order_item = OrderItem.objects.get(order=order, product=product, packsize=selected_pack_size)
-            order_item.quantity += quantity  # Increase quantity instead of replacing
+            order_item.quantity += quantity  
             order_item.price = price * order_item.quantity  
             order_item.save()
             print(f'OrderItem updated: Pack Size - {selected_pack_size}, Price - {order_item.price}')
@@ -82,7 +82,7 @@ def product_view(request, slug):
             )
             print(f'OrderItem created: Pack Size - {selected_pack_size}, Price - {order_item.price}')
 
-        return redirect(reverse('cart'))  # Redirect to cart after adding
+        return redirect(reverse('cart'))  
 
     else:
         order_item = None
@@ -149,7 +149,7 @@ def generate_invoice(request, order_id):
 @login_required
 @require_http_methods(["GET", "POST"])
 def view_cart(request):
-    # Handle POST requests for quantity updates (legacy support)
+    
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         order_item_id = request.POST.get('item_id')
@@ -287,69 +287,6 @@ def remove_item_from_cart(request, id):
     )
     cart_item.delete()
     return JsonResponse({'success': True})
-
-@login_required
-@require_POST
-def send_whatsapp_message(request):
-    """Send WhatsApp message with cart details"""
-    try:
-        order = Order.objects.filter(customer=request.user, paid=False).first()
-
-        if not order:
-            return JsonResponse({'error': 'Cart is empty'}, status=400)
-
-        items = OrderItem.objects.filter(order=order)
-
-        if not items.exists():
-            return JsonResponse({'error': 'Cart is empty'}, status=400)
-
-        # Build order message with clean structure
-        message_parts = []
-        message_parts.append("🛒 New Order")
-        message_parts.append("━━━━━━━━━━━━━━━━")
-        
-        total = 0
-        for item in items:
-            line = f"• {item.product.name} ({item.packsize})\n  Qty: {item.quantity} × ₹{(item.price/item.quantity):.2f} = ₹{item.price:.2f}"
-            message_parts.append(line)
-            total += item.price
-        
-        message_parts.append("━━━━━━━━━━━━━━━━")
-        message_parts.append(f"💰 Total Amount: ₹{total:.2f}")
-        
-        # Add customer info if available
-        customer_info = []
-        if request.user.get_full_name():
-            customer_info.append(f"👤 {request.user.get_full_name()}")
-        if request.user.email:
-            customer_info.append(f"📧 {request.user.email}")
-        
-        if customer_info:
-            message_parts.append("━━━━━━━━━━━━━━━━")
-            message_parts.extend(customer_info)
-        
-        # Join with single newlines (no extra spaces)
-        message = "\n".join(message_parts)
-
-        # Get WhatsApp number from settings with fallback
-        phone = getattr(settings, 'WHATSAPP_OWNER_NUMBER', None)
-        
-        if not phone:
-            return JsonResponse({
-                'error': 'WhatsApp number not configured',
-                'message': 'Please add WHATSAPP_OWNER_NUMBER to your settings.py',
-                'example': 'WHATSAPP_OWNER_NUMBER = "919876543210"'
-            }, status=500)
-
-        # Properly encode the message for URL
-        encoded_message = quote(message)
-        url = f"https://api.whatsapp.com/send?phone={phone}&text={encoded_message}"
-
-        return JsonResponse({'success': True, 'url': url})
-        
-    except Exception as e:
-        return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
-
 
 @login_required
 def create_order(request):

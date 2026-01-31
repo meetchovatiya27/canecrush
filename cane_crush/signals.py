@@ -151,10 +151,10 @@ def send_payment_approval_whatsapp(payment):
         
         # TODO: Integrate with WhatsApp Business API for automatic sending
         # Example integration with WhatsApp Business API:
-        # 
+        
         # from django.conf import settings
         # import requests
-        # 
+        
         # if hasattr(settings, 'WHATSAPP_API_TOKEN'):
         #     api_url = "https://graph.facebook.com/v18.0/YOUR_PHONE_NUMBER_ID/messages"
         #     headers = {

@@ -1,4 +1,3 @@
-# admin.py
 from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 from .models import Category, Product, Order, OrderItem, PackSize, ContactMessage, Review, Payment, ProductPackSize
@@ -38,7 +37,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'id', 'customer', 'get_total_amount', 'created', 'paid', 'get_payment_status')
+    list_display = ('order_id', 'customer', 'get_total_amount', 'created', 'paid', 'get_payment_status')
     list_filter = ('created', 'updated', 'paid')
     search_fields = ('order_id', 'id', 'customer__username', 'customer__email')
     readonly_fields = ('order_id', 'created', 'updated', 'get_total_amount', 'get_payment_info')
